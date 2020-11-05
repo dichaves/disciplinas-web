@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>!!!!! DISCIPLINAS !!!!!</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div id='landing-page'>
+        <span id='boas-vindas'>Bem-vindx, alunx!</span>
+        <p><span>Esse espaço foi criado para você. Seja por ter dispensado, reprovado ou não pago alguma 
+            disciplina obrigatória; seja por querer adiantar as que você já tenha os pré-requisitos, ou
+            até limitar suas escolhas de acordo com seu tempo disponível. As possibilidades são infinitas,
+            mas o objetivo é sempre o mesmo: otimizar cada semestre da sua vida acadêmica, de acordo com
+            o <strong>seu</strong> objetivo.</span></p>
+        <button id="landing-page-button">Clique aqui se quiser facilitar sua vida ;)</button>
+    </div>
+
+    <div id='menu-background'></div>
+
+    <div id='menu'>
+        <h2>Olá alunx!</h2>
+        <p>Começe preenchendo abaixo sua entrada e disciplinas concluídas:</p><br>
+        <form>
+            <fieldset>
+                <legend>Entrada</legend>
+                
+                <select name="ano-entrada" id="ano-entrada">
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                </select>
+                
+                <input type="radio" id="ponto 1" name="semestre-entrada" value="1"><label for="male">.1</label>
+                <input type="radio" id="ponto 2" name="semestre-entrada" value="2"><label for="female">.2</label><br>
+            </fieldset><br>
+            <fieldset>
+                <legend>Disciplinas concluídas</legend>
+                <div id="selecao-disciplinas">
+                    <div id="disciplinas-nao-selecionadas"></div>
+                    <div id="disciplinas-selecionadas"></div>
+                </div>
+            </fieldset><br>
+            <input type="submit" value="Me mostre meu perfil!">
+        </form>
+    </div>
+
+    <div id='content'>
+        <div class="periodo">
+            <h1>1o Período</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Disciplina</th>
+                        <th>CH</th>
+                        <th>Pré-requisitos</th>
+                    </tr>
+                </thead>
+                <tbody id='tbody 1o periodo'>
+                    <!-- <tr id='tr Anatomia 1'>
+                        <td>FT024</td>
+                        <td>Anatomia 1</td>
+                        <td>90h</td>
+                        <td>
+                            <div class="etiquetas-pre-req">
+                                <div class="eh-pre-req">é</div>
+                                <div class="tem-pre-req">tem</div>
+                                <div class="tem-pre-req">tem</div>
+                            </div>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <div class="periodo">
+            <h1>2o Período</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Disciplina</th>
+                        <th>CH</th>
+                        <th>Pré-requisitos</th>
+                    </tr>
+                </thead>
+                <tbody id='tbody 2o periodo'>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>FT024</td>
+                        <td>Cinesiologia</td>
+                        <td>60h</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

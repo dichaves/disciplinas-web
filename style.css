@@ -1,0 +1,282 @@
+:root {
+    --background-color: #4D5E54;
+    --table-background-rgb: 255, 255, 255;
+    --thead-font-color: rgba(var(--table-background-rgb),0.5);
+    --tbody-font-color: rgba(255,255,255,.9);
+
+    --background-color: #FFF;
+    --table-background-rgb: 0, 0, 0;
+    --theadbg-h1-menubg-opacity: .8;
+    --thead-font-color: ;
+    --tbody-font-color: ;
+    --tr-border: 2px solid var(--background-color);
+
+    --menu-width: 25vw;
+    --content-width: calc(100 - var(--menu-width));
+    --content-leftright-padding: 12vw; 
+}
+
+body {
+    margin: 0;
+    background-color: var(--background-color);
+    font-family: "Lucida Console", Monaco, monospace;
+    color: white;
+}
+
+/* ------------------     LANDING PAGE     -------------------- */
+
+#landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    font-size: 1rem;
+    text-align: center;
+    opacity: 1;
+    z-index: 2;
+    transition: opacity 0.5s ease;
+}
+
+#landing-page > span {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 4em;
+}
+
+#landing-page p {
+    line-height: 2em;
+    text-align: justify;
+    width: 60%;
+    margin-bottom: 2em;
+}
+
+p > span {
+    background-color: rgba(0,0,0,.4);
+    padding: 0.2em;
+}
+
+#landing-page-button {
+    transition: opacity 0.1s ease;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0.5em 0.8em;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 0.5em;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* ------------------     MENU     -------------------- */
+
+#menu-background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: width 2s ease, opacity 2s ease-in;
+    /* background-color: #BFDEB6; */
+    background-color: rgb(51,51,51);
+    z-index: 1;
+}
+
+#menu {
+    display: none;
+    /* background-color: #BFDEB6; */
+    background-color: rgb(51,51,51);
+    height: 100vh;
+    width: var(--menu-width);
+    text-align: left;
+    font-size: 0.8em;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 3vw 2vw;
+    box-sizing: border-box;
+    box-shadow: 0 0 0.5em black;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: 2;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+#menu > p {
+    font-size: 1em;
+}
+
+form {
+    text-align: center;
+    width: 100%;
+    border-radius: 0.5em;
+}
+
+fieldset {
+    padding: 1em;
+    text-align: center;
+    width: auto;
+    border-radius: inherit;
+    border: 1px solid white;
+    margin-bottom: 1em;
+}
+
+legend, input[type=submit] {
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-weight: bold;
+    text-align: left;
+    padding: 0.5em 0.8em;
+    border-radius: inherit;
+}
+
+select {
+    padding: 0.1em;
+}
+
+input {
+    border-radius: inherit;
+    padding: 0.5em 0.8em;
+    border-color: transparent;
+}
+
+label {
+    font-weight: bold;
+}
+
+#busca-disciplinas {
+    width: 100%;
+}
+
+#selecao-disciplinas {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 30vh;
+    text-align: left;
+}
+
+#selecao-disciplinas > div {
+    overflow: auto;
+    width: 100%;
+    height: 48%;
+    background-color: rgba(255,255,255,.1);
+    border-radius: 0.5em;
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+
+.disciplina {
+    border-radius: inherit;
+    padding: 0.1em 0.5em;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: rgba(255,255,255,.5);
+    color: white;
+    margin-bottom: 0.2em;
+    cursor: pointer;
+}
+
+
+/* ------------------     CONTENT     -------------------- */
+
+#content {
+    display: none;
+    top: 0;
+    margin-left: var(--menu-width);
+    width: var(--content-width);
+    height: 100vh;
+    padding: 3em var(--content-leftright-padding);
+    box-sizing: border-box;
+    overflow: auto;
+    z-index: 2;
+}
+
+.periodo {
+    margin-bottom: 3em;
+}
+
+h1 {
+    color: rgba(var(--table-background-rgb), var(--theadbg-h1-menubg-opacity));
+}
+
+table {
+    font-size: 0.9em;
+    width: 100%;
+    border-spacing: 0;
+    border: var(--tr-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    font-weight: bold;
+    color: var(--background-color);
+    background-color: rgba(var(--table-background-rgb), var(--theadbg-h1-menubg-opacity));
+}
+
+tbody {
+    font-weight: lighter;
+    color: rgba(var(--table-background-rgb), .8);
+    background-color: rgba(var(--table-background-rgb), .1);
+}
+
+td, th {
+    padding: 0.5em 1em;
+}
+
+th {
+    white-space: nowrap;
+}
+
+td:not(:last-child), th:not(:last-child) {
+    border-right: var(--tr-border);
+}
+
+tr:not(:last-child) td {
+    border-bottom: var(--tr-border);
+}
+
+th:nth-child(2) {
+    width: 100%;
+}
+
+td:not(:nth-child(2)) {
+    text-align: center;
+}
+
+.etiquetas-pre-req {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.etiquetas-pre-req div {
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 0.5em;
+    padding: 0.1em 0;
+    box-sizing: border-box;
+    width: 40%;
+    cursor: context-menu;
+}
+
+.eh-pre-req {
+    background-color: red;
+    border-color: lightpink;
+}
+
+.tem-pre-req {
+    background-color: cyan;
+    border-color: lightcyan;
+}
+
+.nao-pre-req {
+    display: none;
+}
