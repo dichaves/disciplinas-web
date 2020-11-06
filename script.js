@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // menu.style.display = 'none';
 });
 
+// ------------------     TRANSLADA LANDING PAGE     -------------------- 
+
 const menu = document.getElementById('menu');
 const landingPage = document.getElementById('landing-page');
 const landingPageButton = document.getElementById('landing-page-button');
@@ -29,37 +31,58 @@ function hideLandingPage() {
   }, 3000);
 }
 
+// ----------     LIDA COM INPUTS RELATIVOS À ENTRADA E DETERMINA PERÍODO DO ALUNO     -------------------- 
 
-
+// Do backend
 const anoAtual = 2020;
 const semestreAtual = 1;
+const numeroMaximoSemestres = 18; // TODO: inativar radio para semestres impossíveis (ex: 2020.2 e ? 2011.1 ?)
+
+// Valores iniciais dos inputs (ano e semestre atuais)
 var anoEntrada = anoAtual;
 var semestreEntrada = semestreAtual;
-var semestresTrancados = 0;
-var periodosEntreAnos = 0;
-var correcaoSemestre = 0;
-var meuPeriodo = 1;
+var semestresTrancados = 0; // TODO: adicionar opção p/ selecionar se trancou algum semestre
 
-
+// NÃO MUDAR NENHUM VALOR A PARTIR DAQUI:
 const selectAno = document.getElementById('ano-entrada');
-selectAno.onchange = function() {
+const radiosSemestre = document.getElementsByName('semestre-entrada');
+
+// Adiciona as tags <option> para ano ao Select
+for (var ano = anoAtual; ano >= (anoAtual - parseInt(numeroMaximoSemestres/2)); ano--) {
+  var option = document.createElement('option');
+  option.value = ano;
+  option.innerHTML = ano;
+  selectAno.append(option);
+}
+
+// Define o estado inicial de select e radios
+selectAno.selectedIndex = 0;
+radiosSemestre[semestreAtual-1].checked = true;
+
+// Cálculos do período atual em eventos 'onchange' (inputs selecionados)
+//    Valores de acordo com os valores iniciais dos imputs  (ano e semestre atuais)
+var periodosEntreAnos = (anoAtual - anoEntrada) * 2;
+var correcaoSemestre = ((semestreEntrada == semestreAtual) ? 1 : 0);
+var meuPeriodo = semestreAtual;
+
+//    Quando 'onchange' é ativado
+selectAno.onchange = function () {
   anoEntrada = selectAno.value;
   periodosEntreAnos = (anoAtual - anoEntrada) * 2;
   meuPeriodo = periodosEntreAnos + correcaoSemestre - semestresTrancados;
+  console.log('Período do aluno: '.concat(meuPeriodo.toString()));
+  console.log(radiosSemestre[semestreAtual-1].checked);
 };
 
-const radioUm = document.getElementById('ponto 1');
-const radioDois = document.getElementById('ponto 2');
-radioUm.onchange = atualizaSemestre;
-radioDois.onchange = atualizaSemestre;
-
+radiosSemestre[0].onchange = atualizaSemestre;
+radiosSemestre[1].onchange = atualizaSemestre;
 
 function atualizaSemestre() {
-  if (this.checked) {
-    semestreEntrada = this.value;
-    correcaoSemestre = ((semestreEntrada == semestreAtual) ? 1 : 0);
-    meuPeriodo = periodosEntreAnos + correcaoSemestre - semestresTrancados;
-  }
+  semestreEntrada = this.value;
+  correcaoSemestre = ((semestreEntrada == semestreAtual) ? 1 : 0);
+  meuPeriodo = periodosEntreAnos + correcaoSemestre - semestresTrancados;
+  console.log('Período do aluno: '.concat(meuPeriodo.toString()));
+}
 }
 
 
