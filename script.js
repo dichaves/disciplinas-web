@@ -66,12 +66,12 @@ var correcaoSemestre = ((semestreEntrada == semestreAtual) ? 1 : 0);
 var meuPeriodo = semestreAtual;
 
 //    Quando 'onchange' é ativado
-selectAno.onchange = function () {
+selectAno.onchange = function atualizaAno() {
   anoEntrada = selectAno.value;
   periodosEntreAnos = (anoAtual - anoEntrada) * 2;
   meuPeriodo = periodosEntreAnos + correcaoSemestre - semestresTrancados;
   console.log('Período do aluno: '.concat(meuPeriodo.toString()));
-  console.log(radiosSemestre[semestreAtual - 1].checked);
+  marcaDisciplinasAtrasadas(meuPeriodo);
 };
 
 radiosSemestre[0].onchange = atualizaSemestre;
@@ -82,6 +82,7 @@ function atualizaSemestre() {
   correcaoSemestre = ((semestreEntrada == semestreAtual) ? 1 : 0);
   meuPeriodo = periodosEntreAnos + correcaoSemestre - semestresTrancados;
   console.log('Período do aluno: '.concat(meuPeriodo.toString()));
+  marcaDisciplinasAtrasadas(meuPeriodo);
 }
 
 // ------------------     "BANCO DE DADOS" - substituto do backend     --------------------
@@ -170,7 +171,7 @@ function adicionaDisciplinasNaTabelaNoMenu(periodo) {
   }
 }
 
-function adicionaDisciplinaMenu(nome, selecionada) {
+function adicionaDisciplinaMenu(nome, selecionada) { // TODO: MUDAR PRA SÓ UMA DIV E CONCLUÍDAS SÓ MUDAM DE COR
   var disciplina = document.createElement('div');
   disciplina.appendChild(document.createTextNode(nome));
 
@@ -189,6 +190,33 @@ function adicionaDisciplinaMenu(nome, selecionada) {
 }
 
 atualizaPlaceholderText();
+
+// ------------------     MUDANÇAS NAS TABLES     -------------------- 
+
+function marcaDisciplinasAtrasadas(periodo) {
+  for (let i = 1; i < periodo; i++) {
+    let tbody = document.getElementById('tbody-periodo-' + i);
+    tbody.style.backgroundColor = 'rgba(255, 0, 0, 0.6)';
+  }
+  for (let j = numeroPeriodos; j >= periodo; j--) {
+    let tbody = document.getElementById('tbody-periodo-' + j);
+    tbody.style.backgroundColor = 'rgba(0, 0, 0, .1)'; // TODO: PEGAR VARIÁVEL CSS
+  }
+}
+
+function escondePeriodo() {
+  for (let periodo = 1; periodo <= numeroPeriodos; periodo++) {
+    let tbodyPeriodo = document.getElementById('tbody-periodo-' + periodo);
+    let children = tbodyPeriodo.children;
+    let i = 0;
+    var esconder = true;
+    while (esconder && i < children.length) {
+      esconder = ((children[i].style.display == 'none') ? true : false);
+      i += 1;
+    }
+    document.getElementById('div-periodo-' + periodo).style.display = (esconder ? 'none' : 'block');
+  }
+}
 
 
 // ------------------     EVENTOS ONCLICK     -------------------- 
@@ -229,7 +257,7 @@ function atualizaDisciplinasMenu() {
   } else {
     atualizaContent(nomeDisciplina);
   }
-
+  escondePeriodo();
   atualizaPlaceholderText();
 }
 

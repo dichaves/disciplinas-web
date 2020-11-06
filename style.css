@@ -172,6 +172,12 @@ label {
     box-sizing: border-box;
 }
 
+#selecao-disciplinas span {
+    font-size: 0.8em;
+    text-align: center;
+    display: block;
+}
+
 .disciplina {
     border-radius: inherit;
     padding: 0.1em 0.5em;
