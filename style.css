@@ -198,6 +198,17 @@ ul {
     white-space: nowrap;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+#main-ul-menu span::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+#main-ul-menu span {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
 .periodo-li {
     margin-bottom: 1em;
 }

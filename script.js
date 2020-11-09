@@ -20,7 +20,7 @@ function hideLandingPage() {
   perfil.style.display = 'block';
   menu.style.display = 'block';
   landingPage.style.opacity = "0";
-  menuBackground.style.width = "25vw";
+  menuBackground.style.width = "24vw";
   setTimeout(() => {
     landingPage.style.display = 'none';
     menu.style.opacity = "1";
