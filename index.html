@@ -11,45 +11,47 @@
 </head>
 
 <body>
-    <div id='landing-page'>
-        <span id='boas-vindas'>Bem-vindx, alunx!</span>
-        <p><span>Esse espaço foi criado para você. Seja por ter dispensado, reprovado ou não pago alguma 
-            disciplina obrigatória; seja por querer adiantar as que você já tenha os pré-requisitos, ou
-            até limitar suas escolhas de acordo com seu tempo disponível. As possibilidades são infinitas,
-            mas o objetivo é sempre o mesmo: otimizar cada semestre da sua vida acadêmica, de acordo com
-            o <strong>seu</strong> objetivo.</span></p>
-        <button id="landing-page-button">Clique aqui se quiser facilitar sua vida ;)</button>
-    </div>
+    <section>
+        <div id='landing-page'>
+            <span id='boas-vindas'>Bem-vindx, alunx!</span>
+            <p><span>Esse espaço foi criado para você. Seja por ter dispensado, reprovado ou não pago alguma
+                    disciplina obrigatória; seja por querer adiantar as que você já tenha os pré-requisitos, ou
+                    até limitar suas escolhas de acordo com seu tempo disponível. As possibilidades são infinitas,
+                    mas o objetivo é sempre o mesmo: otimizar cada semestre da sua vida acadêmica, de acordo com
+                    o <strong>seu</strong> objetivo.</span></p>
+            <button id="landing-page-button">Clique aqui se quiser facilitar sua vida ;)</button>
+        </div>
 
-    <div id='menu-background'></div>
-
+        <div id='menu-background'></div>
+    </section>
+    
     <div id='menu'>
         <h2>Olá alunx!</h2>
-        <p>Começe preenchendo abaixo sua entrada e disciplinas concluídas:</p><br>
+        <p>Comece preenchendo abaixo sua entrada e disciplinas concluídas:</p><br>
         <form>
             <fieldset>
                 <legend>Entrada</legend>
-                
                 <select name="ano-entrada" id="ano-entrada"></select>
-                
-                <input type="radio" id=".1" name="semestre-entrada" value="1"><label for="male">.1</label>
-                <input type="radio" id=".2" name="semestre-entrada" value="2"><label for="female">.2</label><br>
+                <input type="radio" id=".1" name="semestre-entrada" value="1">
+                <label for=".1">.1</label>
+                <input type="radio" id=".2" name="semestre-entrada" value="2">
+                <label for=".2">.2</label>
+                <br>
             </fieldset><br>
             <fieldset>
                 <legend>Disciplinas concluídas</legend>
-                <div id="selecao-disciplinas">
-                    <div id="disciplinas-nao-selecionadas"></div>
-                    <div id="disciplinas-selecionadas"><span id="placeholder-span"></span></div>
+                <div id="div-lists-menu">
+                    <ul id='main-ul-menu'></ul>
                 </div>
             </fieldset><br>
             <input type="submit" value="Me mostre meu perfil!">
         </form>
     </div>
 
-    <div id='content'>
-        <div id='div-periodo' class="periodo">
-            <h1>1o Período</h1>
-            <table>
+    <section id='perfil'>
+        <section id='modelo-periodo' class="periodo">
+            <h2>1o Período</h2> <!-- TODO: colocar em <header> -->
+            <table> <!-- TODO: colocar em <main> -->
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -73,8 +75,9 @@
                     </tr> -->
                 </tbody>
             </table>
-        </div>
-    </div>
+            <!-- TODO: colocar um <footer> com soma de carga horária total -->
+        </section>
+    </section>
 </body>
 
 </html>

@@ -6,12 +6,12 @@
 
     --background-color: #FFF;
     --table-background-rgb: 0, 0, 0;
-    --theadbg-h1-menubg-opacity: .8;
+    --theadbg-h2-menubg-opacity: .8;
     --thead-font-color: ;
     --tbody-font-color: ;
     --tr-border: 2px solid var(--background-color);
 
-    --menu-width: 25vw;
+    --menu-width: 20vw;
     --content-width: calc(100 - var(--menu-width));
     --content-leftright-padding: 12vw; 
 }
@@ -96,14 +96,14 @@ p > span {
     left: 0;
     top: 0;
     padding: 3vw 2vw;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     box-shadow: 0 0 0.5em black;
     opacity: 0;
     transition: opacity 1s ease;
     z-index: 2;
 }
 
-h2 {
+#menu h2 {
     margin-top: 0;
 }
 
@@ -119,11 +119,12 @@ form {
 
 fieldset {
     padding: 1em;
-    text-align: center;
-    width: auto;
     border-radius: inherit;
     border: 1px solid white;
     margin-bottom: 1em;
+    width: 100%;
+    max-width: var(--menu-width);
+    box-sizing: border-box;
 }
 
 legend, input[type=submit] {
@@ -140,7 +141,7 @@ select {
     padding: 0.1em;
 }
 
-input {
+fieldset:first-child input { /* TODO: AJEITAR!!!!! */
     border-radius: inherit;
     padding: 0.5em 0.8em;
     border-color: transparent;
@@ -150,16 +151,60 @@ label {
     font-weight: bold;
 }
 
-#busca-disciplinas {
-    width: 100%;
+#div-lists-menu {
+    height: 30vh;
+    width: calc(var(--menu-width) - 2em); /* 2em = padding do fieldset * 2 */
+    text-align: left;
+    overflow-y: scroll;
+    /* background-color: rgba(255,255,255,.1); */
+    /* border-radius: 0.5em; */
+    padding: 0.5em;
+    box-sizing: border-box;
 }
 
-#selecao-disciplinas {
+#main-ul-menu {
+    /* box-sizing: border-box; */
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    padding-left: 0;
+    margin-left: 1em;
+}
+
+.periodo-ul {
+    background-color: black;
+    border-radius: 0.8em;
+    padding: 0.3em; 
+}
+
+#main-ul-menu label {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    height: 30vh;
-    text-align: left;
+    align-items: center;
+    padding: 0.2em 0.4em;
+    cursor: pointer;
+}
+
+#main-ul-menu input {
+    margin: 0;
+    padding: 0;
+}
+
+#main-ul-menu span {
+    overflow-x: scroll;
+    width: calc(100% - 2em);
+    white-space: nowrap;
+}
+
+.periodo-li {
+    margin-bottom: 1em;
+}
+
+ul, li {
+    overflow: hidden;
+    list-style-type: none;
 }
 
 #selecao-disciplinas > div {
@@ -190,9 +235,9 @@ label {
 }
 
 
-/* ------------------     CONTENT     -------------------- */
+/* ------------------     PERFIL     -------------------- */
 
-#content {
+#perfil {
     display: none;
     top: 0;
     margin-left: var(--menu-width);
@@ -208,8 +253,9 @@ label {
     margin-bottom: 3em;
 }
 
-h1 {
-    color: rgba(var(--table-background-rgb), var(--theadbg-h1-menubg-opacity));
+.periodo h2 {
+    font-size: 1.8em;
+    color: rgba(var(--table-background-rgb), var(--theadbg-h2-menubg-opacity));
 }
 
 table {
@@ -224,7 +270,7 @@ table {
 thead {
     font-weight: bold;
     color: var(--background-color);
-    background-color: rgba(var(--table-background-rgb), var(--theadbg-h1-menubg-opacity));
+    background-color: rgba(var(--table-background-rgb), var(--theadbg-h2-menubg-opacity));
 }
 
 tbody {
@@ -251,6 +297,10 @@ tr:not(:last-child) td {
 
 th:nth-child(2) {
     width: 100%;
+}
+
+td:nth-child(2) {
+    font-weight: bold;
 }
 
 td:not(:nth-child(2)) {

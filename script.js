@@ -1,8 +1,7 @@
-
 document.addEventListener("DOMContentLoaded", function () {
   // const menu = document.getElementById('menu');
   // const landingPage = document.getElementById('landing-page');
-  // content.style.display = 'none';
+  // perfil.style.display = 'none';
   // menu.style.display = 'none';
 });
 
@@ -12,13 +11,13 @@ const menu = document.getElementById('menu');
 const landingPage = document.getElementById('landing-page');
 const landingPageButton = document.getElementById('landing-page-button');
 const menuBackground = document.getElementById('menu-background');
-const content = document.getElementById('content');
+const perfil = document.getElementById('perfil');
 
 landingPageButton.onclick = hideLandingPage;
 
 function hideLandingPage() {
   landingPageButton.style.visibility = "hidden";
-  content.style.display = 'block';
+  perfil.style.display = 'block';
   menu.style.display = 'block';
   landingPage.style.opacity = "0";
   menuBackground.style.width = "25vw";
@@ -85,6 +84,17 @@ function atualizaSemestre() {
   marcaDisciplinasAtrasadas(meuPeriodo);
 }
 
+function marcaDisciplinasAtrasadas(meuPeriodo) {
+  for (let i = 1; i < meuPeriodo; i++) {
+    let tbody = document.getElementById('tbody-' + i);
+    tbody.style.backgroundColor = 'rgba(255, 0, 0, 0.6)';
+  }
+  for (let j = numeroPeriodos; j >= meuPeriodo; j--) {
+    let tbody = document.getElementById('tbody-' + j);
+    tbody.style.backgroundColor = 'rgba(0, 0, 0, .1)'; // TODO: PEGAR VARIÁVEL CSS
+  }
+}
+
 // ------------------     "BANCO DE DADOS" - substituto do backend     --------------------
 
 function Disciplina(periodo, codigo, nome, cargaHoraria) {
@@ -114,177 +124,157 @@ const codigosDisciplinas = codigosDisciplinas1.concat(codigosDisciplinas2);
 const cargasHorarias = cargasHorarias1.concat(cargasHorarias2);
 const periodosDisciplinas = periodosDisciplinas1.concat(periodosDisciplinas2);
 
-// cria array com todas os objetos tipo Disciplina
+// Cria objetos tipo Disciplina e os coloca num array
 var disciplinasObjs = [];
 for (var i = 0; i < nomesDisciplinas.length; i++) {
   var disciplinaObj = new Disciplina(periodosDisciplinas[i], codigosDisciplinas[i], nomesDisciplinas[i], cargasHorarias[i]);
   disciplinasObjs.push(disciplinaObj);
 }
 
-// ------------------     INICIALIZA DIVs P/ CADA PERÍODO E MENU     -------------------- 
+// --------  INICIALIZA VALORES DE PERÍODOS E CADEIRAS EM <SECTION> NO PERFIL E <UL> DO MENU  -------- 
 
 // Do backend
 const numeroPeriodos = 10;
 
-// divPeriodo é o modelo da div que contém <h1> e <table>
-const divPeriodo = document.getElementById('div-periodo');
+// Do HTML
+const modeloPeriodoSection = document.getElementById('modelo-periodo'); // contém <h2> e <table>
+const mainULMenu = document.getElementById('main-ul-menu');
 
-const disciplinasNaoSelecionadas = document.getElementById('disciplinas-nao-selecionadas');
-const disciplinasSelecionadas = document.getElementById('disciplinas-selecionadas');
-
-// Iteração por cada período, adicionando sua <div> e disciplinas na tabela
+// Iteração por cada período, adicionando sua <section> no perfil e <li> no menu
 for (var periodo = 1; periodo <= numeroPeriodos; periodo++) {
-  adicionaDivPeriodo(periodo);
-  adicionaDisciplinasNaTabelaNoMenu(periodo);
+  adicionaPeriodoSection(periodo);
+  adicionaPeriodoLI(periodo);
 }
-divPeriodo.remove();
+modeloPeriodoSection.remove();
 
-function adicionaDivPeriodo(periodo) {
-  var novaDivPeriodo = divPeriodo.cloneNode(true);
-  var periodoStr = periodo.toString();
-  novaDivPeriodo.id = 'div-periodo-'.concat(periodoStr);
-  novaDivPeriodo.children[0].innerHTML = periodoStr.concat('o Período');
-  novaDivPeriodo.children[1].children[1].id = 'tbody-periodo-'.concat(periodoStr);
-  content.appendChild(novaDivPeriodo);
+// Iteração por cada disciplina, adicionando sua <tr> no perfil e sua <li> no menu
+for (const disciplina of disciplinasObjs) {
+  adicionaDisciplinaTR(disciplina);
+  adicionaDisciplinaLI(disciplina);
 }
 
-function adicionaDisciplinasNaTabelaNoMenu(periodo) {
-  let disciplinasPeriodo = disciplinasObjs.filter(disciplina => disciplina.periodo == periodo);
-  let tbodyPeriodo = document.getElementById('tbody-periodo-'.concat(periodo.toString()));
+function adicionaPeriodoSection(periodo) {
+  var novoPeriodo = modeloPeriodoSection.cloneNode(true);
+  novoPeriodo.id = 'section-' + periodo;
+  novoPeriodo.children[0].innerHTML = periodo + 'o Período';
+  novoPeriodo.children[1].children[1].id = 'tbody-' + periodo;
 
-  let todasPeriodoStr = 'Todas do ' + periodo + 'o período'
-  adicionaDisciplinaMenu(todasPeriodoStr, true);
-  adicionaDisciplinaMenu(todasPeriodoStr, false);
-
-  for (const disciplina of disciplinasPeriodo) {
-    var tr = document.createElement('tr');
-    tr.insertCell(0).innerHTML = disciplina.codigo;
-    tr.insertCell(1).innerHTML = disciplina.nome;
-    tr.insertCell(2).innerHTML = disciplina.cargaHoraria;
-    tr.insertCell(3);
-    tr.id = 'tr-'.concat(disciplina.nome);
-    tr.style.display = 'table-row';
-    tbodyPeriodo.appendChild(tr);
-
-    adicionaDisciplinaMenu(disciplina.nome, true);
-    adicionaDisciplinaMenu(disciplina.nome, false);
-  }
+  perfil.appendChild(novoPeriodo);
 }
 
-function adicionaDisciplinaMenu(nome, selecionada) { // TODO: MUDAR PRA SÓ UMA DIV E CONCLUÍDAS SÓ MUDAM DE COR
-  var disciplina = document.createElement('div');
-  disciplina.appendChild(document.createTextNode(nome));
+function adicionaDisciplinaTR(disciplina) {
+  var tr = document.createElement('tr');
+  tr.insertCell(0).innerHTML = disciplina.codigo;
+  tr.insertCell(1).innerHTML = disciplina.nome;
+  tr.insertCell(2).innerHTML = disciplina.cargaHoraria;
+  tr.insertCell(3);
+  tr.id = 'tr-' + disciplina.nome;
+  tr.className = 'tr-disciplina';
+  tr.style.display = 'table-row';
 
-  if (selecionada) {
-    disciplina.className = 'selecionada disciplina';
-    disciplina.id = 'selecionada-'.concat(nome);
-    disciplina.style.display = 'none';
-    disciplinasSelecionadas.appendChild(disciplina);
-  } else {
-    disciplina.className = 'deselecionada disciplina';
-    disciplina.id = 'deselecionada-'.concat(nome);
-    disciplinasNaoSelecionadas.appendChild(disciplina);
-  }
-
-  disciplina.addEventListener('click', atualizaDisciplinasMenu);
+  var tbodyPeriodo = document.getElementById('tbody-' + disciplina.periodo);
+  tbodyPeriodo.appendChild(tr);
 }
 
-atualizaPlaceholderText();
-
-// ------------------     MUDANÇAS NAS TABLES     -------------------- 
-
-function marcaDisciplinasAtrasadas(periodo) {
-  for (let i = 1; i < periodo; i++) {
-    let tbody = document.getElementById('tbody-periodo-' + i);
-    tbody.style.backgroundColor = 'rgba(255, 0, 0, 0.6)';
-  }
-  for (let j = numeroPeriodos; j >= periodo; j--) {
-    let tbody = document.getElementById('tbody-periodo-' + j);
-    tbody.style.backgroundColor = 'rgba(0, 0, 0, .1)'; // TODO: PEGAR VARIÁVEL CSS
-  }
-}
-
-function escondePeriodo() {
-  for (let periodo = 1; periodo <= numeroPeriodos; periodo++) {
-    let tbodyPeriodo = document.getElementById('tbody-periodo-' + periodo);
-    let children = tbodyPeriodo.children;
-    let i = 0;
-    var esconder = true;
-    while (esconder && i < children.length) {
-      esconder = ((children[i].style.display == 'none') ? true : false);
-      i += 1;
-    }
-    document.getElementById('div-periodo-' + periodo).style.display = (esconder ? 'none' : 'block');
-  }
-}
-
-
-// ------------------     EVENTOS ONCLICK     -------------------- 
-
-function atualizaDisciplinasMenu() {
-  var nomeDisciplina;
-
-  if (this.id.startsWith('de')) {
-    this.style.display = 'none';
-    document.getElementById(this.id.substring(2)).style.display = 'block';
-    nomeDisciplina = this.id.replace('deselecionada-', '');
-  } else {
-    this.style.display = 'none';
-    document.getElementById('de'.concat(this.id)).style.display = 'block';
-    nomeDisciplina = this.id.replace('selecionada-', '');
-  } 
-
-  if (this.id.endsWith('o período')) {
-    let periodoStr = this.id.slice(-10, -9);
-    let periodo = parseInt(periodoStr);
-    let disciplinasPeriodo = disciplinasObjs.filter(disciplina => disciplina.periodo == periodo);
-    for (const disciplina of disciplinasPeriodo) {
-      disciplinaDeselecionadaMenu = document.getElementById('deselecionada-'.concat(disciplina.nome));
-      disciplinaSelecionadaMenu = document.getElementById('selecionada-'.concat(disciplina.nome));
-      if (this.id.startsWith('deselecionada-')) {
-        disciplinaDeselecionadaMenu.style.display = 'none';
-        if (disciplinaSelecionadaMenu.style.display == 'block') {
-          disciplinaSelecionadaMenu.style.display = 'none';
-        } else {
-          atualizaContent(disciplina.nome);
-        }
-      } else {
-        disciplinaDeselecionadaMenu.style.display = 'block';
-        disciplinaSelecionadaMenu.style.display = 'none';
-        atualizaContent(disciplina.nome);
-      }
-    }
-  } else {
-    atualizaContent(nomeDisciplina);
-  }
-  escondePeriodo();
-  atualizaPlaceholderText();
-}
-
-function atualizaContent(nomeDisciplina) {
-  var tableRow = document.getElementById('tr-'.concat(nomeDisciplina));
-  if (tableRow.style.display == 'table-row') {
-    tableRow.style.display = 'none';
-  } else {
-    tableRow.style.display = 'table-row';
-  }
-}
-
-function atualizaPlaceholderText() {
-  let placeholderStr = 'As disciplinas selecionadas aparecerão aqui :-)';
-  let children = disciplinasSelecionadas.children;
-  let placeholderSpan = document.getElementById('placeholder-span');
+function adicionaPeriodoLI(periodo) {
+  var periodoLI = document.createElement('li');
+  periodoLI.className = "periodo-li";
+  periodoLI.id = 'li-periodo-' + periodo;
   
-  let needsPlaceholder = true;
-  let i = 1;
-  while (needsPlaceholder && i < children.length) {
-    needsPlaceholder = ((children[i].style.display == 'block') ? false : true);
-    i += 1;
-  }
+  var todasPeriodoStr = 'Todas do ' + periodo + 'o período';
+  adicionaLabelCheckbox(periodoLI, todasPeriodoStr);
+  
+  var periodoUL = document.createElement('ul');
+  periodoUL.className = 'periodo-ul';
+  periodoUL.id = 'ul-periodo-' + periodo;
+  
+  periodoLI.appendChild(periodoUL);
+  mainULMenu.appendChild(periodoLI);
+}
 
-  if (needsPlaceholder) {
-    placeholderSpan.innerText = placeholderStr;
+function adicionaDisciplinaLI(disciplina) {
+  var disciplinaLI = document.createElement('li');
+  disciplinaLI.className = "disciplina-li"
+  disciplinaLI.id = 'li-disciplina-' + disciplina.nome;
+  adicionaLabelCheckbox(disciplinaLI, disciplina.nome);
+
+  var periodoUL = document.getElementById('ul-periodo-' + disciplina.periodo);
+  periodoUL.appendChild(disciplinaLI);
+}
+
+function adicionaLabelCheckbox(liElement, nome) {
+  var label = document.createElement('label');
+  label.id = 'label-' + nome;
+  liElement.appendChild(label)
+  
+  var input = document.createElement('input');
+  input.type = 'checkbox';
+  input.name = 'disciplinas-concluidas';
+  input.value = nome;
+  input.id = 'checkbox-' + nome;
+  label.addEventListener('change', onChangeLICheckbox);
+  
+  var span = document.createElement('span');
+  span.id = 'input-' + nome;
+  span.innerText = nome;
+  
+  labelChildren = input.outerHTML + span.outerHTML;
+  label.innerHTML = labelChildren;
+}
+
+// ------------------     EVENTOS ONCHANGE     -------------------- 
+// TODO: fazer com o "backend" substituto
+
+function onChangeLICheckbox() {
+  const nome = this.id.slice('label-'.length);
+  const concluida = document.getElementById('checkbox-' + nome).checked;
+
+  if (nome.startsWith('Todas do ')) {
+    var periodo = nome[9];
+    atualizaPeriodoUL(periodo, concluida);
+    atualizaPeriodoSection(periodo, concluida);
   } else {
-    placeholderSpan.innerText = '';
+    var periodo = getPeriodoDisciplina(nome);
+    atualizaDisciplinaTR(nome, concluida);
+    atualizaPeriodoSection(periodo, checaSePeriodoConcluido(periodo));
   }
 }
+
+function atualizaPeriodoUL(periodo, concluida) {
+  var periodoUL = document.getElementById('ul-periodo-' + periodo);
+  periodoUL.style.display = (concluida ? 'none' : 'block');
+
+  var checkboxElements = periodoUL.getElementsByTagName('input');
+  for (checkbox of checkboxElements) {
+    checkbox.checked = (concluida ? true : false);
+    atualizaDisciplinaTR(checkbox.id.slice(9), concluida);
+  }
+}
+
+function atualizaPeriodoSection(periodo, concluido) {
+  var sectionPeriodo = document.getElementById('section-' + periodo);
+  sectionPeriodo.style.display = (concluido ? 'none' : 'block');
+}
+
+function atualizaDisciplinaTR(nomeDisciplina, concluida) {
+  var trDisciplina = document.getElementById('tr-' + nomeDisciplina);
+  trDisciplina.style.display = (concluida ? 'none' : 'table-row');
+}
+
+function getPeriodoDisciplina(nome) {
+  var disciplinaObj = disciplinasObjs.filter(disciplina => disciplina.nome == nome);
+  return disciplinaObj[0].periodo;
+}
+
+function checaSePeriodoConcluido(periodo) {
+  var tbodyPeriodo = document.getElementById('tbody-' + periodo);
+  var trs = tbodyPeriodo.children;
+  var concluido;
+  for (var tr of trs) {
+    concluido = ((tr.style.display == 'none') ? true : false);
+    if (!concluido) {break;}
+  }
+  return concluido;
+}
+
+// ------------------     --------------------     -------------------- 
