@@ -207,32 +207,6 @@ ul, li {
     list-style-type: none;
 }
 
-#selecao-disciplinas > div {
-    overflow: auto;
-    width: 100%;
-    height: 48%;
-    background-color: rgba(255,255,255,.1);
-    border-radius: 0.5em;
-    padding: 0.5em;
-    box-sizing: border-box;
-}
-
-#selecao-disciplinas span {
-    font-size: 0.8em;
-    text-align: center;
-    display: block;
-}
-
-.disciplina {
-    border-radius: inherit;
-    padding: 0.1em 0.5em;
-    box-sizing: border-box;
-    width: 100%;
-    background-color: rgba(255,255,255,.5);
-    color: white;
-    margin-bottom: 0.2em;
-    cursor: pointer;
-}
 
 
 /* ------------------     PERFIL     -------------------- */
@@ -307,13 +281,12 @@ td:not(:nth-child(2)) {
     text-align: center;
 }
 
-.etiquetas-pre-req {
+td:last-child {
     display: flex;
     justify-content: space-evenly;
-    width: 100%;
 }
 
-.etiquetas-pre-req div {
+td:last-child div {
     border-width: 2px;
     border-style: solid;
     border-radius: 0.5em;
@@ -331,8 +304,4 @@ td:not(:nth-child(2)) {
 .tem-pre-req {
     background-color: cyan;
     border-color: lightcyan;
-}
-
-.nao-pre-req {
-    display: none;
 }

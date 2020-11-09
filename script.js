@@ -102,6 +102,10 @@ function Disciplina(periodo, codigo, nome, cargaHoraria) {
   this.codigo = codigo;
   this.nome = nome;
   this.cargaHoraria = cargaHoraria;
+  this.concluida = false;
+  this.obrigatoria = true;
+  this.temPreReq = ((this.periodo == 1) ? false : true);
+  this.ehPreReq = true;
 }
 
 // 1o periodo
@@ -125,10 +129,10 @@ const cargasHorarias = cargasHorarias1.concat(cargasHorarias2);
 const periodosDisciplinas = periodosDisciplinas1.concat(periodosDisciplinas2);
 
 // Cria objetos tipo Disciplina e os coloca num array
-var disciplinasObjs = [];
+var todosObjetosDisciplina = [];
 for (var i = 0; i < nomesDisciplinas.length; i++) {
   var disciplinaObj = new Disciplina(periodosDisciplinas[i], codigosDisciplinas[i], nomesDisciplinas[i], cargasHorarias[i]);
-  disciplinasObjs.push(disciplinaObj);
+  todosObjetosDisciplina.push(disciplinaObj);
 }
 
 // --------  INICIALIZA VALORES DE PERÍODOS E CADEIRAS EM <SECTION> NO PERFIL E <UL> DO MENU  -------- 
@@ -148,7 +152,7 @@ for (var periodo = 1; periodo <= numeroPeriodos; periodo++) {
 modeloPeriodoSection.remove();
 
 // Iteração por cada disciplina, adicionando sua <tr> no perfil e sua <li> no menu
-for (const disciplina of disciplinasObjs) {
+for (const disciplina of todosObjetosDisciplina) {
   adicionaDisciplinaTR(disciplina);
   adicionaDisciplinaLI(disciplina);
 }
@@ -163,11 +167,20 @@ function adicionaPeriodoSection(periodo) {
 }
 
 function adicionaDisciplinaTR(disciplina) {
+  var divEtiquetaEh = document.createElement('div');
+  divEtiquetaEh.className = 'eh-pre-req';
+  divEtiquetaEh.innerText = "é";
+  divEtiquetaEh.style.visibility = ((disciplina.ehPreReq) ? 'visible' : 'hidden');
+  var divEtiquetaTem = document.createElement('div');
+  divEtiquetaTem.className = 'tem-pre-req';
+  divEtiquetaTem.innerText = "tem";
+  divEtiquetaTem.style.visibility = ((disciplina.temPreReq) ? 'visible' : 'hidden');
+  
   var tr = document.createElement('tr');
-  tr.insertCell(0).innerHTML = disciplina.codigo;
-  tr.insertCell(1).innerHTML = disciplina.nome;
-  tr.insertCell(2).innerHTML = disciplina.cargaHoraria;
-  tr.insertCell(3);
+  tr.insertCell(0).innerText = disciplina.codigo;
+  tr.insertCell(1).innerText = disciplina.nome;
+  tr.insertCell(2).innerText = disciplina.cargaHoraria;
+  tr.insertCell(3).innerHTML = divEtiquetaEh.outerHTML + divEtiquetaTem.outerHTML;
   tr.id = 'tr-' + disciplina.nome;
   tr.className = 'tr-disciplina';
   tr.style.display = 'table-row';
@@ -234,7 +247,7 @@ function onChangeLICheckbox() {
     atualizaPeriodoUL(periodo, concluida);
     atualizaPeriodoSection(periodo, concluida);
   } else {
-    var periodo = getPeriodoDisciplina(nome);
+    var periodo = getDisciplinas(todosObjetosDisciplina, 'nome', nome).periodo;
     atualizaDisciplinaTR(nome, concluida);
     atualizaPeriodoSection(periodo, checaSePeriodoConcluido(periodo));
   }
@@ -259,21 +272,20 @@ function atualizaPeriodoSection(periodo, concluido) {
 function atualizaDisciplinaTR(nomeDisciplina, concluida) {
   var trDisciplina = document.getElementById('tr-' + nomeDisciplina);
   trDisciplina.style.display = (concluida ? 'none' : 'table-row');
+
+  getDisciplinas(todosObjetosDisciplina, 'nome', nomeDisciplina).concluida = (concluida ? true : false);
 }
 
-function getPeriodoDisciplina(nome) {
-  var disciplinaObj = disciplinasObjs.filter(disciplina => disciplina.nome == nome);
-  return disciplinaObj[0].periodo;
+function getDisciplinas(objetosDisciplina, atributo, valor) {
+  var disciplinas = objetosDisciplina.filter(disciplina => disciplina[atributo] == valor);
+  if (atributo == 'nome' || atributo == 'codigo') { disciplinas = disciplinas[0]; }
+  return disciplinas;
 }
 
 function checaSePeriodoConcluido(periodo) {
-  var tbodyPeriodo = document.getElementById('tbody-' + periodo);
-  var trs = tbodyPeriodo.children;
-  var concluido;
-  for (var tr of trs) {
-    concluido = ((tr.style.display == 'none') ? true : false);
-    if (!concluido) {break;}
-  }
+  var disciplinasPeriodo = getDisciplinas(todosObjetosDisciplina, 'periodo', periodo);
+  var disciplinasRestantesPeriodo = getDisciplinas(disciplinasPeriodo, 'concluida', false);
+  var concluido = ((disciplinasRestantesPeriodo.length == 0) ? true : false);
   return concluido;
 }
 
