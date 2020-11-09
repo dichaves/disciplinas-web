@@ -97,15 +97,15 @@ function marcaDisciplinasAtrasadas(meuPeriodo) {
 
 // ------------------     "BANCO DE DADOS" - substituto do backend     --------------------
 
-function Disciplina(periodo, codigo, nome, cargaHoraria) {
+function Disciplina(periodo, codigo, nome, cargaHoraria, preRequisitos) {
   this.periodo = periodo;
   this.codigo = codigo;
   this.nome = nome;
   this.cargaHoraria = cargaHoraria;
+  this.preRequisitos = preRequisitos;
+  this.prende = [];
   this.concluida = false;
   this.obrigatoria = true;
-  this.temPreReq = ((this.periodo == 1) ? false : true);
-  this.ehPreReq = true;
 }
 
 // 1o periodo
@@ -114,6 +114,7 @@ const nomesDisciplinas1 = ['Anatomia 1', 'Bioquímica 1', 'Citologia', 'Embriolo
 const codigosDisciplinas1 = ['AN001', 'BQ001', 'HE017', 'HE019', 'BR011', 'HE011', 'FT036'];
 const cargasHorarias1 = ['90h', '60h', '30h', '30h', '60h', '60h', '30h'];
 const periodosDisciplinas1 = [...nomesDisciplinas1].fill(1, 0, 7);
+const codigosPreReq1 = [...nomesDisciplinas1].fill(null, 0, 7);
 
 // 2o periodo
 const nomesDisciplinas2 = ['Administração em Fisioterapia', 'Anatomia VI', 'Física e Biofísica 2', 'Fisiologia', 'Genética Humana 1',
@@ -121,18 +122,36 @@ const nomesDisciplinas2 = ['Administração em Fisioterapia', 'Anatomia VI', 'F�
 const codigosDisciplinas2 = ['FT007', 'AN214', 'BR012', 'FF001', 'GN215', 'CS006'];
 const cargasHorarias2 = ['30h', '90h', '60h', '90h', '60h', '60h'];
 const periodosDisciplinas2 = [...nomesDisciplinas2].fill(2, 0, 6);
+const codigosPreReq2 = [null, ['AN001'], ['BR011'], ['AN001', 'HE011'], ['BQ001', 'HE017'], null];
 
 // todos os periodos juntos
 const nomesDisciplinas = nomesDisciplinas1.concat(nomesDisciplinas2);
 const codigosDisciplinas = codigosDisciplinas1.concat(codigosDisciplinas2);
 const cargasHorarias = cargasHorarias1.concat(cargasHorarias2);
 const periodosDisciplinas = periodosDisciplinas1.concat(periodosDisciplinas2);
+const codigosPreReq = codigosPreReq1.concat(codigosPreReq2);
 
-// Cria objetos tipo Disciplina e os coloca num array
+
 var todosObjetosDisciplina = [];
 for (var i = 0; i < nomesDisciplinas.length; i++) {
-  var disciplinaObj = new Disciplina(periodosDisciplinas[i], codigosDisciplinas[i], nomesDisciplinas[i], cargasHorarias[i]);
-  todosObjetosDisciplina.push(disciplinaObj);
+  // Adiciona os pré-requisitos já como objetos Disciplina
+  var preRequisitos = [];
+  if (codigosPreReq[i]) {
+    for (codigo of codigosPreReq[i]) {
+      var disciplina = getDisciplinas(todosObjetosDisciplina, 'codigo', codigo);
+      preRequisitos.push(disciplina);
+    }
+  }
+  // Cria objetos tipo Disciplina e os coloca num array
+  var novaDisciplina = new Disciplina(periodosDisciplinas[i], codigosDisciplinas[i], nomesDisciplinas[i], cargasHorarias[i], preRequisitos);
+  todosObjetosDisciplina.push(novaDisciplina);
+}
+
+// Adiciona em cada objeto Disciplina as disciplinas que ela prende
+for (disciplina of todosObjetosDisciplina) {
+  for (disciplinaPreReq of disciplina.preRequisitos) {
+    disciplinaPreReq.prende.push(disciplina);
+  }
 }
 
 // --------  INICIALIZA VALORES DE PERÍODOS E CADEIRAS EM <SECTION> NO PERFIL E <UL> DO MENU  -------- 
@@ -167,20 +186,22 @@ function adicionaPeriodoSection(periodo) {
 }
 
 function adicionaDisciplinaTR(disciplina) {
-  var divEtiquetaEh = document.createElement('div');
-  divEtiquetaEh.className = 'eh-pre-req';
-  divEtiquetaEh.innerText = "é";
-  divEtiquetaEh.style.visibility = ((disciplina.ehPreReq) ? 'visible' : 'hidden');
   var divEtiquetaTem = document.createElement('div');
   divEtiquetaTem.className = 'tem-pre-req';
+  divEtiquetaTem.id = "tem-" + disciplina.nome;
   divEtiquetaTem.innerText = "tem";
-  divEtiquetaTem.style.visibility = ((disciplina.temPreReq) ? 'visible' : 'hidden');
+  divEtiquetaTem.style.visibility = ((disciplina.preRequisitos.length > 0) ? 'visible' : 'hidden');
+  var divEtiquetaEh = document.createElement('div');
+  divEtiquetaEh.className = 'eh-pre-req';
+  divEtiquetaEh.id = "eh-" + disciplina.nome;
+  divEtiquetaEh.innerText = "é";
+  divEtiquetaEh.style.visibility = ((disciplina.prende.length > 0) ? 'visible' : 'hidden');
   
   var tr = document.createElement('tr');
   tr.insertCell(0).innerText = disciplina.codigo;
   tr.insertCell(1).innerText = disciplina.nome;
   tr.insertCell(2).innerText = disciplina.cargaHoraria;
-  tr.insertCell(3).innerHTML = divEtiquetaEh.outerHTML + divEtiquetaTem.outerHTML;
+  tr.insertCell(3).innerHTML = divEtiquetaTem.outerHTML + divEtiquetaEh.outerHTML;
   tr.id = 'tr-' + disciplina.nome;
   tr.className = 'tr-disciplina';
   tr.style.display = 'table-row';
@@ -273,7 +294,20 @@ function atualizaDisciplinaTR(nomeDisciplina, concluida) {
   var trDisciplina = document.getElementById('tr-' + nomeDisciplina);
   trDisciplina.style.display = (concluida ? 'none' : 'table-row');
 
-  getDisciplinas(todosObjetosDisciplina, 'nome', nomeDisciplina).concluida = (concluida ? true : false);
+  const disciplina = getDisciplinas(todosObjetosDisciplina, 'nome', nomeDisciplina);
+  disciplina.concluida = (concluida ? true : false);
+  atualizaEtiquetaTemPreRequisitos(disciplina);
+}
+
+function atualizaEtiquetaTemPreRequisitos(disciplina) {
+  for (disciplinaQuePrende of disciplina.prende) {
+    const divEtiquetaTem = document.getElementById('tem-' + disciplinaQuePrende.nome);
+    if (getDisciplinas(disciplinaQuePrende.preRequisitos, 'concluida', false).length == 0) {
+      divEtiquetaTem.style.backgroundColor = 'transparent';
+    } else {
+      divEtiquetaTem.style.backgroundColor = 'cyan';
+    }
+  }
 }
 
 function getDisciplinas(objetosDisciplina, atributo, valor) {
