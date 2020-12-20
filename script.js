@@ -11,13 +11,14 @@ const menu = document.getElementById('menu');
 const landingPage = document.getElementById('landing-page');
 const landingPageButton = document.getElementById('landing-page-button');
 const menuBackground = document.getElementById('menu-background');
+const conteudo = document.getElementById('conteudo');
 const perfil = document.getElementById('perfil');
 
 landingPageButton.onclick = hideLandingPage;
 
 function hideLandingPage() {
   landingPageButton.style.visibility = "hidden";
-  perfil.style.display = 'block';
+  conteudo.style.display = 'block';
   menu.style.display = 'block';
   landingPage.style.opacity = "0";
   menuBackground.style.width = "24vw";
@@ -97,39 +98,104 @@ function marcaDisciplinasAtrasadas(meuPeriodo) {
 
 // ------------------     "BANCO DE DADOS" - substituto do backend     --------------------
 
-function Disciplina(periodo, codigo, nome, cargaHoraria, preRequisitos) {
+function Disciplina(periodo, codigo, nome, cargaHoraria, chPratica, preRequisitos) {
   this.periodo = periodo;
   this.codigo = codigo;
   this.nome = nome;
   this.cargaHoraria = cargaHoraria;
+  this.chPratica = chPratica;
   this.preRequisitos = preRequisitos;
   this.prende = [];
   this.concluida = false;
   this.obrigatoria = true;
 }
 
-// 1o periodo
-const nomesDisciplinas1 = ['Anatomia 1', 'Bioquímica 1', 'Citologia', 'Embriologia', 'Física e Biofísica',
-  'Histologia', 'História da Fisioterapia'];
-const codigosDisciplinas1 = ['AN001', 'BQ001', 'HE017', 'HE019', 'BR011', 'HE011', 'FT036'];
-const cargasHorarias1 = ['90h', '60h', '30h', '30h', '60h', '60h', '30h'];
-const periodosDisciplinas1 = [...nomesDisciplinas1].fill(1, 0, 7);
-const codigosPreReq1 = [...nomesDisciplinas1].fill(null, 0, 7);
+var nomesDisciplinas = [];
+var codigosDisciplinas = [];
+var cargasHorarias = [];
+var chsPraticas = [];
+var periodosDisciplinas = [];
+var codigosPreReq = [];
 
-// 2o periodo
-const nomesDisciplinas2 = ['Administração em Fisioterapia', 'Anatomia VI', 'Física e Biofísica 2', 'Fisiologia', 'Genética Humana 1',
-  'Socio-antropologia'];
-const codigosDisciplinas2 = ['FT007', 'AN214', 'BR012', 'FF001', 'GN215', 'CS006'];
-const cargasHorarias2 = ['30h', '90h', '60h', '90h', '60h', '60h'];
-const periodosDisciplinas2 = [...nomesDisciplinas2].fill(2, 0, 6);
-const codigosPreReq2 = [null, ['AN001'], ['BR011'], ['AN001', 'HE011'], ['BQ001', 'HE017'], null];
+// 1o periodo - 7 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Anatomia 1', 'Bioquímica 1', 'Citologia', 'Embriologia', 'Física e Biofísica', 'Histologia', 'História da Fisioterapia']);
+codigosDisciplinas = codigosDisciplinas.concat(['AN001', 'BQ001', 'HE017', 'HE019', 'BR011', 'HE011', 'FT036']);
+cargasHorarias = cargasHorarias.concat([90, 60, 30, 30, 60, 60, 30]);
+chsPraticas = chsPraticas.concat([60, 30, 15, 15, 30, 30, 0]);
+periodosDisciplinas = periodosDisciplinas.concat([1, 1, 1, 1, 1, 1, 1]);
+codigosPreReq = codigosPreReq.concat([null, null, null, null, null, null, null]);
 
-// todos os periodos juntos
-const nomesDisciplinas = nomesDisciplinas1.concat(nomesDisciplinas2);
-const codigosDisciplinas = codigosDisciplinas1.concat(codigosDisciplinas2);
-const cargasHorarias = cargasHorarias1.concat(cargasHorarias2);
-const periodosDisciplinas = periodosDisciplinas1.concat(periodosDisciplinas2);
-const codigosPreReq = codigosPreReq1.concat(codigosPreReq2);
+// 2o periodo - 6 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Administração em Fisioterapia', 'Anatomia VI', 'Física e Biofísica 2', 'Fisiologia', 'Genética Humana 1', 'Socio-antropologia']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT007', 'AN214', 'BR012', 'FF001', 'GN215', 'CS006']);
+cargasHorarias = cargasHorarias.concat([30, 90, 60, 90, 60, 60]);
+chsPraticas = chsPraticas.concat([0, 60, 30, 60, 30, 0]);
+periodosDisciplinas = periodosDisciplinas.concat([2, 2, 2, 2, 2, 2]);
+codigosPreReq = codigosPreReq.concat([null, ['AN001'], ['BR011'], ['AN001', 'HE011'], ['BQ001', 'HE017'], null]);
+
+// 3o periodo - 6 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Cinesiologia', 'Ética e Deontologia', 'Introdução à Saúde Pública', 'Metodol Do Trab Científico 1', 'Processos Patológicos Gerais 3', 'Psicologia 1']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT024', 'MS330', 'MS200', 'BI236', 'PA213', 'PS001']);
+cargasHorarias = cargasHorarias.concat([90, 30, 60, 30, 45, 60]);
+chsPraticas = chsPraticas.concat([30, 0, 30, 0, 30, 0]);
+periodosDisciplinas = periodosDisciplinas.concat([3, 3, 3, 3, 3, 3]);
+codigosPreReq = codigosPreReq.concat([['AN001', 'FF001'], null, null, null, ['AN001', 'FF001'], null]);
+
+// 4o periodo - 7 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Avaliação em Fisioterapia', 'Bioestatística', 'Eletroterapia', 'Fundamentos de Farmacologia', 'Hidroterapia', 'Patologia dos Órgãos e Sistemas 1', 'Termofototerapia']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT012', 'ET624', 'FT004', 'FF243', 'FT037', 'PA315', 'FT003']);
+cargasHorarias = cargasHorarias.concat([75, 45, 75, 60, 45, 45, 60]);
+chsPraticas = chsPraticas.concat([60, 0, 30, 30, 30, 15, 30]);
+periodosDisciplinas = periodosDisciplinas.concat([4, 4, 4, 4, 4, 4, 4]);
+codigosPreReq = codigosPreReq.concat([['FT024', 'PA213'], ['BI236'], ['BR012', 'FT024', 'PA213'], ['FF001'], ['FT024', 'PA213'], ['PA213'], ['BR012', 'FT024', 'PA213']]);
+
+//5o periodo - 8 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Angiologia', 'Cardiologia 1', 'Ginecologia e Obstetricia', 'Pediatria 1', 'Pneumologia 1', 'Recursos Cinesioterapêuticos', 'Reumatologia 1', 'Traumato-Ortopedia 1']);
+codigosDisciplinas = codigosDisciplinas.concat(['CR203', 'MC204', 'MF305', 'MF301', 'MC206', 'FT028', 'MC205', 'CR206']);
+cargasHorarias = cargasHorarias.concat([30, 30, 30, 30, 30, 150, 30, 45]);
+chsPraticas = chsPraticas.concat([0, 0, 0, 0, 0, 90, 0, 0]);
+periodosDisciplinas = periodosDisciplinas.concat([5, 5, 5, 5, 5, 5, 5, 5]);
+codigosPreReq = codigosPreReq.concat([['PA315'], ['PA315'], ['PA315'], ['PA315'], ['PA315'], ['FT012'], ['PA315'], ['PA315']]);
+
+// 6o periodo - 5 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Fisioterapia Aplicada à Angiologia', 'Fisioterapia Aplicada à Saúde Coletiva', 'Neurologia', 'Psiquiatria', 'Recursos Terapêuticos Manuais']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT026', 'FT027', 'NP300', 'NP310', 'FT025']);
+cargasHorarias = cargasHorarias.concat([60, 75, 45, 45, 75]);
+chsPraticas = chsPraticas.concat([30, 60, 0, 0, 45]);
+periodosDisciplinas = periodosDisciplinas.concat([6, 6, 6, 6, 6]);
+codigosPreReq = codigosPreReq.concat([['CR203', 'FT012', 'FT028'], ['FT012', 'MS200'], ['PA315'], ['PA315', 'PS001'], ['FT024', 'PA315']]);
+
+// 7o periodo - 4 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Fisioterapia Aplicada à Neurologia', 'Fisioterapia Aplicada à Pneumologia', 'Fisioterapia Aplicada à Reumatologia', 'Fisioterapia Aplicada à Traumato-Ortopedia']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT039', 'FT040', 'FT041', 'FT042']);
+cargasHorarias = cargasHorarias.concat([120, 90, 90, 120]);
+chsPraticas = chsPraticas.concat([90, 60, 60, 90]);
+periodosDisciplinas = periodosDisciplinas.concat([7, 7, 7, 7]);
+codigosPreReq = codigosPreReq.concat([['FT012', 'FT025', 'FT028', 'NP300'], ['FT012', 'FT025', 'FT028', 'MC206'], ['FT003', 'FT004', 'FT012', 'FT025', 'FT028', 'MC205'], ['CR206', 'FT003', 'FT004', 'FT012', 'FT025', 'FT028']]);
+
+// 8o periodo - 6 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Fisioterapia Aplicada à Cardiologia', 'Fisioterapia Aplicada à Dermatofuncional', 'Fisioterapia Aplicada à Pacientes em UTI', 'Fisioterapia Aplicada à Pediatria', 'Fisioterapia Aplicada à Saúde da Mulher', 'Trabalho de Conclusão de Curso I']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT029', 'FT031', 'FT030', 'FT043', 'FT044', 'FT032']);
+cargasHorarias = cargasHorarias.concat([60, 60, 90, 120, 90, 30]);
+chsPraticas = chsPraticas.concat([30, 30, 60, 90, 60, 0]);
+periodosDisciplinas = periodosDisciplinas.concat([8, 8, 8, 8, 8, 8]);
+codigosPreReq = codigosPreReq.concat([['FT012', 'FT025', 'FT028', 'MC204'], ['FT003', 'FT004', 'FT012', 'FT025', 'FT028'], ['FT012', 'FT040', 'MC204'], ['FT012', 'FT025', 'FT028', 'MF301'], ['FT012', 'FT040', 'FT042', 'MF305'], ['ET624']]);
+
+// 9o periodo - 1 disciplina
+nomesDisciplinas = nomesDisciplinas.concat(['Prática Supervisionada I']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT034']);
+cargasHorarias = cargasHorarias.concat([480]);
+chsPraticas = chsPraticas.concat([480]);
+periodosDisciplinas = periodosDisciplinas.concat([9]);
+codigosPreReq = codigosPreReq.concat([['FT027', 'FT029', 'FT030', 'FT031', 'FT039', 'FT041', 'FT043', 'FT044']]);
+
+// 10o periodo - 2 disciplinas
+nomesDisciplinas = nomesDisciplinas.concat(['Prática Supervisionada II', 'Trabalho de Conclusão de Curso II']);
+codigosDisciplinas = codigosDisciplinas.concat(['FT035', 'FT033']);
+cargasHorarias = cargasHorarias.concat([480, 30]);
+chsPraticas = chsPraticas.concat([480, 0]);
+periodosDisciplinas = periodosDisciplinas.concat([10, 10]);
+codigosPreReq = codigosPreReq.concat([['FT034'], ['FT034']]);
 
 
 var todosObjetosDisciplina = [];
@@ -143,7 +209,7 @@ for (var i = 0; i < nomesDisciplinas.length; i++) {
     }
   }
   // Cria objetos tipo Disciplina e os coloca num array
-  var novaDisciplina = new Disciplina(periodosDisciplinas[i], codigosDisciplinas[i], nomesDisciplinas[i], cargasHorarias[i], preRequisitos);
+  var novaDisciplina = new Disciplina(periodosDisciplinas[i], codigosDisciplinas[i], nomesDisciplinas[i], cargasHorarias[i], chsPraticas[i], preRequisitos);
   todosObjetosDisciplina.push(novaDisciplina);
 }
 
@@ -196,15 +262,25 @@ function adicionaDisciplinaTR(disciplina) {
   divEtiquetaEh.id = "eh-" + disciplina.nome;
   divEtiquetaEh.innerText = "é";
   divEtiquetaEh.style.visibility = ((disciplina.prende.length > 0) ? 'visible' : 'hidden');
+
+  var spanTooltip = document.createElement('span');
+  for (preReq of disciplina.preRequisitos) { spanTooltip.innerHTML += preReq.nome + ' (' + preReq.periodo + 'o) <br />';}
+  divEtiquetaTem.appendChild(spanTooltip);
+
+  spanTooltip = document.createElement('span');
+  for (prende of disciplina.prende) { spanTooltip.innerHTML += prende.nome + ' (' + prende.periodo + 'o) <br />';}
+  divEtiquetaEh.appendChild(spanTooltip);
   
   var tr = document.createElement('tr');
   tr.insertCell(0).innerText = disciplina.codigo;
   tr.insertCell(1).innerText = disciplina.nome;
-  tr.insertCell(2).innerText = disciplina.cargaHoraria;
+  tr.insertCell(2).innerText = disciplina.cargaHoraria + 'h';
   tr.insertCell(3).innerHTML = divEtiquetaTem.outerHTML + divEtiquetaEh.outerHTML;
   tr.id = 'tr-' + disciplina.nome;
   tr.className = 'tr-disciplina';
   tr.style.display = 'table-row';
+
+  // TODO: cell2 de disc. práticas com tooltip e text-decoration: underline; e text-decoration-style: dashed; 
 
   var tbodyPeriodo = document.getElementById('tbody-' + disciplina.periodo);
   tbodyPeriodo.appendChild(tr);
