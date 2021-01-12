@@ -51,7 +51,7 @@ body {
     margin-bottom: 2em;
 }
 
-p > span {
+#texto-inicial {
     background-color: rgba(0,0,0,.4);
     padding: 0.2em;
 }
