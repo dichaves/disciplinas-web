@@ -139,7 +139,7 @@ codigosDisciplinas = codigosDisciplinas.concat(['FT024', 'MS330', 'MS200', 'BI23
 cargasHorarias = cargasHorarias.concat([90, 30, 60, 30, 45, 60]);
 chsPraticas = chsPraticas.concat([30, 0, 30, 0, 30, 0]);
 periodosDisciplinas = periodosDisciplinas.concat([3, 3, 3, 3, 3, 3]);
-codigosPreReq = codigosPreReq.concat([['AN001', 'FF001'], null, null, null, ['AN001', 'FF001'], null]);
+codigosPreReq = codigosPreReq.concat([['AN001', 'AN214', 'FF001'], null, null, null, ['AN001', 'FF001'], null]);
 
 // 4o periodo - 7 disciplinas
 nomesDisciplinas = nomesDisciplinas.concat(['Avaliação em Fisioterapia', 'Bioestatística', 'Eletroterapia', 'Fundamentos de Farmacologia', 'Hidroterapia', 'Patologia dos Órgãos e Sistemas 1', 'Termofototerapia']);
@@ -187,7 +187,7 @@ codigosDisciplinas = codigosDisciplinas.concat(['FT034']);
 cargasHorarias = cargasHorarias.concat([480]);
 chsPraticas = chsPraticas.concat([480]);
 periodosDisciplinas = periodosDisciplinas.concat([9]);
-codigosPreReq = codigosPreReq.concat([['FT027', 'FT029', 'FT030', 'FT031', 'FT039', 'FT041', 'FT043', 'FT044']]);
+codigosPreReq = codigosPreReq.concat([['FT029', 'FT030', 'FT031', 'FT039', 'FT041', 'FT043', 'FT044']]);
 
 // 10o periodo - 2 disciplinas
 nomesDisciplinas = nomesDisciplinas.concat(['Prática Supervisionada II', 'Trabalho de Conclusão de Curso II']);
@@ -195,7 +195,7 @@ codigosDisciplinas = codigosDisciplinas.concat(['FT035', 'FT033']);
 cargasHorarias = cargasHorarias.concat([480, 30]);
 chsPraticas = chsPraticas.concat([480, 0]);
 periodosDisciplinas = periodosDisciplinas.concat([10, 10]);
-codigosPreReq = codigosPreReq.concat([['FT034'], ['FT034']]);
+codigosPreReq = codigosPreReq.concat([['FT034'], ['FT032']]);
 
 
 var todosObjetosDisciplina = [];
