@@ -340,6 +340,12 @@ td:nth-child(2) {
     border-block: none;
 }
 
+.sem-pratica {
+    text-decoration: underline;
+    text-decoration-style: double;
+    text-decoration-color: red;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 td:nth-child(2)::-webkit-scrollbar {
     display: none;

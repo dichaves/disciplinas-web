@@ -274,7 +274,14 @@ function adicionaDisciplinaTR(disciplina) {
   var tr = document.createElement('tr');
   tr.insertCell(0).innerText = disciplina.codigo;
   tr.insertCell(1).innerText = disciplina.nome;
-  tr.insertCell(2).innerText = disciplina.cargaHoraria + 'h';
+  if (disciplina.chPratica == 0) {
+    var semPratica = document.createElement('span');
+    semPratica.className = 'sem-pratica';
+    semPratica.textContent = disciplina.cargaHoraria + 'h';
+    tr.insertCell(2).innerHTML = semPratica.outerHTML;
+  } else {
+    tr.insertCell(2).innerText = disciplina.cargaHoraria + 'h';
+  }
   tr.insertCell(3).innerHTML = divEtiquetaTem.outerHTML + divEtiquetaEh.outerHTML;
   tr.id = 'tr-' + disciplina.nome;
   tr.className = 'tr-disciplina';
