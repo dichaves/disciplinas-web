@@ -236,6 +236,10 @@ ul, li {
 
 /* ------------------     PERFIL     -------------------- */
 
+a {
+    color: red;
+}
+
 #conteudo {
     display: none;
     top: 0;
